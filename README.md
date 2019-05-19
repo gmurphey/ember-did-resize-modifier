@@ -1,5 +1,7 @@
 # ember-did-resize-modifier
 
+[![Build Status](https://travis-ci.org/gmurphey/ember-did-resize-modifier.svg?branch=master)](https://travis-ci.org/gmurphey/ember-did-resize-modifier)
+
 This [Ember.js](https://emberjs.com/) addon provides a `{{did-resize}}` modifier that calls a callback whenever a given element is resized.
 
 The resize detection itself is handled by element-resize-detector.
