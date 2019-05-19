@@ -3,11 +3,16 @@
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-modifier",
+    "ember-element-modifier",
+    "element-resize-detector",
+    "did-resize",
+    "resize"
   ],
-  "repository": "",
+  "repository": "gmurphey/ember-did-resize-modifier",
   "license": "MIT",
-  "author": "",
+  "author": "Garrett Murphey <gmurphey@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
