@@ -4,7 +4,7 @@
 
 This [Ember.js](https://emberjs.com/) addon provides a `{{did-resize}}` modifier that calls a callback whenever a given element is resized.
 
-The resize detection itself is handled by element-resize-detector.
+The resize detection itself is handled by [element-resize-detector](https://github.com/wnr/element-resize-detector).
 
 ## Compatibility
 
@@ -40,7 +40,21 @@ export default class ResizableComponent extends Component {
 
 The [`@action` decorator](https://github.com/emberjs/rfcs/blob/master/text/0408-decorators.md#method-binding) is used to bind the `onResize` method to the component instance.
 
-### Handling Multiple Resize Callback
+### Debouncing Resize Events
+
+In the case of an element resizing fluidly (based on the percentage of the screen when the user resizes a window, for example), one may not want their `{{did-resize}}` callback to be called continiously. The `debounce` property may be used to only call the callback after no resize has been detected for a given time.
+
+```
+<div
+  {{did-resize this.onResize debounce=250}}
+>
+  Will only have this.onResize called if a resize has not been detected in the last 250ms
+</div>
+```
+
+There is no debounce by default. This means you can also use a restartable ember-concurrency task as a debounce mechanism if that better suits your needs.
+
+### Handling Multiple Resize Callbacks
 
 You can use the `{{did-resize}}` modifier multiple times on the same element.
 

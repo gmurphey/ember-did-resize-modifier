@@ -62,6 +62,47 @@ module('Integration | Modifier | did-resize', function(hooks) {
     `);
   });
 
+  test('resizing an element twice without setting an explicit debounce calls the callback twice', async function(assert) {
+    this.resizeMethod = sinonSandbox.stub();
+
+    await render(hbs`
+      <div data-test-subject {{did-resize this.resizeMethod}}>
+        Hello world
+      </div>
+    `);
+
+    find('div[data-test-subject]').style.width = "25%";
+
+    await timeout(50);
+
+    find('div[data-test-subject]').style.width = "50%";
+
+    await timeout(50);
+
+    assert.equal(this.resizeMethod.callCount, 2, 'the resize method is called each time the element is resized');
+  });
+
+  test('resizing an element twice when setting an explicit debounce calls the callback once', async function(assert) {
+    this.resizeMethod = sinonSandbox.stub();
+
+    await render(hbs`
+      <div data-test-subject {{did-resize this.resizeMethod debounce=250}}>
+        Hello world
+      </div>
+    `);
+
+    find('div[data-test-subject]').style.width = "25%";
+
+    await timeout(10);
+
+    find('div[data-test-subject]').style.width = "50%";
+
+    await timeout(500);
+
+    assert.equal(this.resizeMethod.callCount, 1, 'the resize method call is debounced');
+    assert.equal(this.resizeMethod.args[0][0], find('div[data-test-subject'));
+  });
+
   test('updating the callback updates the modifier', async function(assert) {
     this.resizeMethod1 = sinonSandbox.stub();
     this.resizeMethod2 = sinonSandbox.stub();
