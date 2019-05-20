@@ -1,20 +1,30 @@
 import { setModifierManager } from '@ember/modifier';
 import { assert } from '@ember/debug';
+import { debounce as runloopDebounce, cancel } from '@ember/runloop';
 
 const SERVICE_NAME = 'service:did-resize-detector';
 
-function setupListener(owner, element, callback) {
+function setupListener(state, owner, element, callback, debounce) {
   assert(
     `ember-did-resize-modifier: '${callback}' is not a valid callback. Provide a function.`,
     typeof callback === 'function'
   );
 
-  owner.lookup(SERVICE_NAME).setup(element, callback, { callOnAdd: false });
+  let cb = function(...args) {
+    if (debounce !== 0) {
+      state.debounceId = runloopDebounce(callback, ...args, debounce);
+    } else {
+      callback(...args);
+    }
+  };
 
-  return callback;
+  owner.lookup(SERVICE_NAME).setup(element, cb, { callOnAdd: false });
+
+  return cb;
 }
 
-function destroyListener(owner, element, callback) {
+function destroyListener(state, owner, element, callback) {
+  cancel(state.debounceId);
   owner.lookup(SERVICE_NAME).teardown(element, callback);
 }
 
@@ -23,22 +33,24 @@ export default setModifierManager(
     createModifier() {
       return {
         element: null,
-        callback: null
+        callback: null,
+        debounce: null,
+        debounceId: null
       };
     },
 
-    installModifier(state, element, { positional: [ callback ] }) {
+    installModifier(state, element, { positional: [ callback ], named: { debounce = 0 } }) {
       state.element = element;
-      state.callback = setupListener(owner, element, callback);
+      state.callback = setupListener(state, owner, element, callback, debounce);
     },
 
-    updateModifier(state, { positional: [callback]}) {
-      destroyListener(owner, state.element, state.callback);
-      state.callback = setupListener(owner, state.element, callback);
+    updateModifier(state, { positional: [callback], named: { debounce = 0 }}) {
+      destroyListener(state, owner, state.element, state.callback);
+      state.callback = setupListener(state, owner, state.element, callback, debounce);
     },
 
-    destroyModifier({ element, callback }) {
-      destroyListener(owner, element, callback);
+    destroyModifier(state) {
+      destroyListener(state, owner, state.element, state.callback);
     }
   }),
   class DidResizeModifier {}
