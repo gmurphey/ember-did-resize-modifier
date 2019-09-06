@@ -4325,10 +4325,10 @@ ember-router-generator@^1.2.3:
   dependencies:
     recast "^0.11.3"
 
-ember-sinon@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/ember-sinon/-/ember-sinon-4.1.0.tgz#f549226e768dd2ab0c54a4b92b7e2c81c141e14f"
-  integrity sha512-JSuZU9mONdKYvYM4u9WniAI0TY+FjDjta24sf4+9JnvS6cihK2GzNuiEyGd5agG+vyUVO620BKKnN9M6IwHhSA==
+ember-sinon@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/ember-sinon/-/ember-sinon-4.1.1.tgz#ff6db9e3b9548e269386d9efe1c381e165f03ba5"
+  integrity sha512-CmLjy7LGcTw2uP0WdFSPuXYbI7rwB4U/5EOtVU5h2jXtItrnspLIXBL50kigDzwv+lgE8XhfDVPbJ1QMrIXWXg==
   dependencies:
     broccoli-funnel "^2.0.0"
     broccoli-merge-trees "^3.0.0"
