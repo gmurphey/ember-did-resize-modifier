@@ -6,9 +6,9 @@ update_configs:
     version_requirement_updates: increase_versions
     ignored_updates:
       - match:
-        depedency_name: 'ember-cli'
+          dependency_name: 'ember-cli'
       - match:
-        dependency_name: 'ember-source'
+          dependency_name: 'ember-source'
     automerged_updates:
       - match:
           dependency_type: 'development'
