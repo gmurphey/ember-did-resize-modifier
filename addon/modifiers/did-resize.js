@@ -4,54 +4,55 @@ import { debounce as runloopDebounce, cancel } from '@ember/runloop';
 
 const SERVICE_NAME = 'service:did-resize-detector';
 
-function setupListener(state, owner, element, callback, debounce) {
-  assert(
-    `ember-did-resize-modifier: '${callback}' is not a valid callback. Provide a function.`,
-    typeof callback === 'function'
-  );
-
-  let cb = function(...args) {
-    if (debounce !== 0) {
-      state.debounceId = runloopDebounce(callback, ...args, debounce);
-    } else {
-      callback(...args);
-    }
-  };
-
-  owner.lookup(SERVICE_NAME).setup(element, cb, { callOnAdd: false });
-
-  return cb;
-}
-
-function destroyListener(state, owner, element, callback) {
-  cancel(state.debounceId);
-  owner.lookup(SERVICE_NAME).teardown(element, callback);
-}
-
 export default setModifierManager(
   (owner) => ({
-    createModifier() {
-      return {
-        element: null,
-        callback: null,
-        debounce: null,
-        debounceId: null
-      };
+    createModifier(factory) {
+      return new factory.class();
     },
 
-    installModifier(state, element, { positional: [ callback ], named: { debounce = 0 } }) {
-      state.element = element;
-      state.callback = setupListener(state, owner, element, callback, debounce);
+    installModifier(instance, element, { positional: [ callback ], named: { debounce = 0 } }) {
+      instance.element = element;
+      instance.debounce = debounce;
+      instance.setupListener(owner, callback);
     },
 
-    updateModifier(state, { positional: [callback], named: { debounce = 0 }}) {
-      destroyListener(state, owner, state.element, state.callback);
-      state.callback = setupListener(state, owner, state.element, callback, debounce);
+    updateModifier(instance, { positional: [callback], named: { debounce = 0 }}) {
+      instance.destroyListener(owner);
+
+      instance.debounce = debounce;
+
+      instance.setupListener(owner, callback);
     },
 
-    destroyModifier(state) {
-      destroyListener(state, owner, state.element, state.callback);
+    destroyModifier(instance) {
+      instance.destroyListener(owner);
     }
   }),
-  class DidResizeModifier {}
+
+
+  class DidResizeModifier {
+    setupListener(owner, callback) {
+      assert(
+        `ember-did-resize-modifier: '${callback}' is not a valid callback. Provide a function.`,
+        typeof callback === 'function'
+      );
+
+      let cb = (...args) => {
+        if (this.debounce !== 0) {
+          this.debounceId = runloopDebounce(callback, ...args, this.debounce);
+        } else {
+          callback(...args);
+        }
+      };
+
+      owner.lookup(SERVICE_NAME).setup(this.element, cb, { callOnAdd: false });
+
+      this.callback = cb;
+    }
+
+    destroyListener(owner) {
+      cancel(this.debounceId);
+      owner.lookup(SERVICE_NAME).teardown(this.element, this.callback);
+    }
+  }
 );
