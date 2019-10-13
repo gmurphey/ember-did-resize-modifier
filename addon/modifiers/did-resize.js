@@ -1,4 +1,4 @@
-import { setModifierManager } from '@ember/modifier';
+import { setModifierManager, capabilities } from '@ember/modifier';
 import { assert } from '@ember/debug';
 import { debounce as runloopDebounce, cancel } from '@ember/runloop';
 
@@ -6,6 +6,8 @@ const SERVICE_NAME = 'service:did-resize-detector';
 
 export default setModifierManager(
   (owner) => ({
+    capabilities: capabilities('3.13'),
+
     createModifier(factory) {
       return new factory.class();
     },
@@ -13,6 +15,7 @@ export default setModifierManager(
     installModifier(instance, element, { positional: [ callback ], named: { debounce = 0 } }) {
       instance.element = element;
       instance.debounce = debounce;
+
       instance.setupListener(owner, callback);
     },
 
@@ -28,7 +31,6 @@ export default setModifierManager(
       instance.destroyListener(owner);
     }
   }),
-
 
   class DidResizeModifier {
     setupListener(owner, callback) {
