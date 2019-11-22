@@ -1,6 +1,12 @@
 # ember-did-resize-modifier
 
-[![Build Status](https://travis-ci.org/gmurphey/ember-did-resize-modifier.svg?branch=master)](https://travis-ci.org/gmurphey/ember-did-resize-modifier)
+[![Build Status](https://github.com/gmurphey/ember-did-resize-modifier/workflows/CI/badge.svg?branch=master)](https://github.com/gmurphey/ember-did-resize-modifier/actions?query=branch%3Amaster)
+[![npm version](https://badge.fury.io/js/ember-did-resize-modifier.svg)](http://badge.fury.io/js/ember-did-resize-modifier)
+[![Download Total](https://img.shields.io/npm/dt/ember-did-resize-modifier.svg)](http://badge.fury.io/js/ember-did-resize-modifier)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-did-resize-modifier.svg)](https://emberobserver.com/addons/ember-did-resize-modifier)
+[![dependencies](https://img.shields.io/david/gmurphey/ember-did-resize-modifier.svg)](https://david-dm.org/gmurphey/ember-did-resize-modifier)
+[![devDependencies](https://img.shields.io/david/dev/gmurphey/ember-did-resize-modifier.svg)](https://david-dm.org/gmurphey/ember-did-resize-modifier?type=dev)
+
 
 This [Ember.js](https://emberjs.com/) addon provides a `{{did-resize}}` modifier that calls a callback whenever a given element is resized.
 
