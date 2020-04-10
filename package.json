@@ -60,7 +60,7 @@
     "eslint-plugin-node": "^11.1.0",
     "lerna-changelog": "^1.0.1",
     "loader.js": "^4.7.0",
-    "qunit-dom": "^1.1.0"
+    "qunit-dom": "^1.2.0"
   },
   "engines": {
     "node": "8.* || >= 10.*"
