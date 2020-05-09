@@ -27,7 +27,7 @@ jobs:
     - name: lint
       run: yarn lint:js
     - name: test
-      run: yarn test
+      run: yarn test:ember
 
   try-scenarios:
     name: ember-try
@@ -40,8 +40,8 @@ jobs:
       fail-fast: true
       matrix:
         ember-try-scenario:
-         - ember-lts-3.8
          - ember-lts-3.12
+         - ember-lts-3.16
          - ember-release
          - ember-beta
          - ember-canary
