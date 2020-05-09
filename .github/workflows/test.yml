@@ -27,7 +27,7 @@ jobs:
     - name: lint
       run: yarn lint:js
     - name: test
-      run: yarn test
+      run: yarn test:ember
 
   try-scenarios:
     name: ember-try
