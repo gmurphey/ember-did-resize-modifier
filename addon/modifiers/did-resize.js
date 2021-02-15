@@ -54,7 +54,9 @@ export default setModifierManager(
 
     destroyListener(owner) {
       cancel(this.debounceId);
-      owner.lookup(SERVICE_NAME).teardown(this.element, this.callback);
+      if (!owner.isDestroyed) {
+        owner.lookup(SERVICE_NAME).teardown(this.element, this.callback);
+      }
     }
   }
 );
