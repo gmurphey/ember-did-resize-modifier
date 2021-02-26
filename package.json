@@ -29,7 +29,7 @@
     "changelog": "lerna-changelog"
   },
   "dependencies": {
-    "element-resize-detector": "^1.2.1",
+    "element-resize-detector": "^1.2.2",
     "ember-auto-import": "^1.10.1",
     "ember-cli-babel": "^7.24.0",
     "ember-cli-htmlbars": "^5.6.0",
