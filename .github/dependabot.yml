@@ -1,0 +1,30 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 10
+  labels:
+  - internal
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: ember-cli
+    versions:
+    - ">= 0"
+  - dependency-name: ember-source
+    versions:
+    - ">= 0"
+  - dependency-name: eslint-plugin-ember
+    versions:
+    - 10.1.2
+    - 10.2.0
+    - 10.3.0
+    - 10.4.1
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+  - dependency-name: ember-qunit
+    versions:
+    - 5.1.4
