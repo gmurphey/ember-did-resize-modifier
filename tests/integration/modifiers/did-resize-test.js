@@ -1,6 +1,12 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, find, settled, setupOnerror, resetOnerror } from '@ember/test-helpers';
+import {
+  render,
+  find,
+  settled,
+  setupOnerror,
+  resetOnerror,
+} from '@ember/test-helpers';
 import { Promise } from 'rsvp';
 import { later } from '@ember/runloop';
 import hbs from 'htmlbars-inline-precompile';
@@ -10,23 +16,23 @@ const timeout = (ms) => {
   return new Promise((resolve) => {
     later(resolve, ms);
   });
-}
+};
 
 let sinonSandbox;
 
-module('Integration | Modifier | did-resize', function(hooks) {
+module('Integration | Modifier | did-resize', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     sinonSandbox = sinon.createSandbox();
-  })
+  });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     resetOnerror();
     sinonSandbox.restore();
   });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     this.resizeMethod = sinonSandbox.stub();
 
     await render(hbs`
@@ -35,24 +41,32 @@ module('Integration | Modifier | did-resize', function(hooks) {
       </div>
     `);
 
-    assert.equal(this.resizeMethod.callCount, 0, 'the resize method is not called on creation');
+    assert.equal(
+      this.resizeMethod.callCount,
+      0,
+      'the resize method is not called on creation'
+    );
 
-    find('div[data-test-subject]').style.width = "25%";
+    find('div[data-test-subject]').style.width = '25%';
 
     await timeout(50);
 
-    assert.equal(this.resizeMethod.callCount, 1, 'the resize method is called when the element is resized');
-    assert.equal(this.resizeMethod.args[0][0], find('div[data-test-subject'));
+    assert.equal(
+      this.resizeMethod.callCount,
+      1,
+      'the resize method is called when the element is resized'
+    );
+    assert.equal(this.resizeMethod.args[0][0], find('div[data-test-subject]'));
   });
 
-  test('an assertion is thrown if a callback is not defined', async function(assert) {
+  test('an assertion is thrown if a callback is not defined', async function (assert) {
     assert.expect(1);
 
-    setupOnerror(function(error) {
+    setupOnerror(function (error) {
       assert.strictEqual(
         error.message,
         "Assertion Failed: ember-did-resize-modifier: 'undefined' is not a valid callback. Provide a function."
-      )
+      );
     });
 
     await render(hbs`
@@ -62,7 +76,7 @@ module('Integration | Modifier | did-resize', function(hooks) {
     `);
   });
 
-  test('resizing an element twice without setting an explicit debounce calls the callback twice', async function(assert) {
+  test('resizing an element twice without setting an explicit debounce calls the callback twice', async function (assert) {
     this.resizeMethod = sinonSandbox.stub();
 
     await render(hbs`
@@ -71,18 +85,22 @@ module('Integration | Modifier | did-resize', function(hooks) {
       </div>
     `);
 
-    find('div[data-test-subject]').style.width = "25%";
+    find('div[data-test-subject]').style.width = '25%';
 
     await timeout(50);
 
-    find('div[data-test-subject]').style.width = "50%";
+    find('div[data-test-subject]').style.width = '50%';
 
     await timeout(50);
 
-    assert.equal(this.resizeMethod.callCount, 2, 'the resize method is called each time the element is resized');
+    assert.equal(
+      this.resizeMethod.callCount,
+      2,
+      'the resize method is called each time the element is resized'
+    );
   });
 
-  test('resizing an element twice when setting an explicit debounce calls the callback once', async function(assert) {
+  test('resizing an element twice when setting an explicit debounce calls the callback once', async function (assert) {
     this.resizeMethod = sinonSandbox.stub();
 
     await render(hbs`
@@ -91,19 +109,23 @@ module('Integration | Modifier | did-resize', function(hooks) {
       </div>
     `);
 
-    find('div[data-test-subject]').style.width = "25%";
+    find('div[data-test-subject]').style.width = '25%';
 
     await timeout(10);
 
-    find('div[data-test-subject]').style.width = "50%";
+    find('div[data-test-subject]').style.width = '50%';
 
     await timeout(500);
 
-    assert.equal(this.resizeMethod.callCount, 1, 'the resize method call is debounced');
-    assert.equal(this.resizeMethod.args[0][0], find('div[data-test-subject'));
+    assert.equal(
+      this.resizeMethod.callCount,
+      1,
+      'the resize method call is debounced'
+    );
+    assert.equal(this.resizeMethod.args[0][0], find('div[data-test-subject]'));
   });
 
-  test('updating the callback updates the modifier', async function(assert) {
+  test('updating the callback updates the modifier', async function (assert) {
     this.resizeMethod1 = sinonSandbox.stub();
     this.resizeMethod2 = sinonSandbox.stub();
 
@@ -115,22 +137,38 @@ module('Integration | Modifier | did-resize', function(hooks) {
       </div>
     `);
 
-    find('div[data-test-subject]').style.width = "25%";
+    find('div[data-test-subject]').style.width = '25%';
 
     await timeout(50);
 
-    assert.equal(this.resizeMethod1.callCount, 1, 'the resize method is called when the element is resized');
-    assert.equal(this.resizeMethod2.callCount, 0, 'the unbound resize method is not called');
+    assert.equal(
+      this.resizeMethod1.callCount,
+      1,
+      'the resize method is called when the element is resized'
+    );
+    assert.equal(
+      this.resizeMethod2.callCount,
+      0,
+      'the unbound resize method is not called'
+    );
 
     this.set('resizeMethod', this.resizeMethod2);
 
     await settled();
 
-    find('div[data-test-subject]').style.width = "50%";
+    find('div[data-test-subject]').style.width = '50%';
 
     await timeout(50);
 
-    assert.equal(this.resizeMethod1.callCount, 1, 'the previously bound resize method is not called again');
-    assert.equal(this.resizeMethod2.callCount, 1, 'the newly bound resize method is called');
+    assert.equal(
+      this.resizeMethod1.callCount,
+      1,
+      'the previously bound resize method is not called again'
+    );
+    assert.equal(
+      this.resizeMethod2.callCount,
+      1,
+      'the newly bound resize method is called'
+    );
   });
-})
+});

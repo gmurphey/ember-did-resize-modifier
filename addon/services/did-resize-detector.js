@@ -5,7 +5,7 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     this.detector = elementResizeDetectorMaker({
-      strategy: "scroll"
+      strategy: 'scroll',
     });
   },
 
@@ -15,5 +15,5 @@ export default Service.extend({
 
   teardown(element, callback) {
     this.detector.removeListener(element, callback);
-  }
+  },
 });

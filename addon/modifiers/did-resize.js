@@ -12,14 +12,21 @@ export default setModifierManager(
       return new factory.class();
     },
 
-    installModifier(instance, element, { positional: [ callback ], named: { debounce = 0 } }) {
+    installModifier(
+      instance,
+      element,
+      { positional: [callback], named: { debounce = 0 } }
+    ) {
       instance.element = element;
       instance.debounce = debounce;
 
       instance.setupListener(owner, callback);
     },
 
-    updateModifier(instance, { positional: [callback], named: { debounce = 0 }}) {
+    updateModifier(
+      instance,
+      { positional: [callback], named: { debounce = 0 } }
+    ) {
       instance.destroyListener(owner);
 
       instance.debounce = debounce;
@@ -29,7 +36,7 @@ export default setModifierManager(
 
     destroyModifier(instance) {
       instance.destroyListener(owner);
-    }
+    },
   }),
 
   class DidResizeModifier {
